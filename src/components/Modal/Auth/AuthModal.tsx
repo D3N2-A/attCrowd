@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { authModalState } from "@/atom/authModalAtom";
+import AuthInputs from "./AuthInputs";
 
 const AuthModal: React.FC = () => {
   const [modalState, setModalState] = useRecoilState(authModalState);
@@ -44,7 +45,8 @@ const AuthModal: React.FC = () => {
               align="center"
               justify="center"
               width="70%"
-              border="1px solid red"
+              flexDirection="column"
+              pb={6}
             >
               <p style={{ fontSize: "12px", fontWeight: "thin" }}>
                 By continuing, you agree are setting up a Reddit account and
@@ -59,9 +61,20 @@ const AuthModal: React.FC = () => {
                 .
               </p>
 
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span
+                  style={{ borderTop: "1px solid #edeff1", width: "40%" }}
+                ></span>
+                <span style={{ fontSize: "0.875rem", margin: "1.5rem" }}>
+                  OR
+                </span>
+                <span
+                  style={{ borderTop: "1px solid #edeff1", width: "40%" }}
+                ></span>
+              </div>
+              <AuthInputs />
               {/* 
               <OAuthButtons/>
-              <AuthInputs/>
               <ResetPassword/>
               */}
             </Flex>
