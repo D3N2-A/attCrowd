@@ -11,6 +11,7 @@ import {
 import React from "react";
 
 const AuthModal: React.FC = () => {
+    
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
