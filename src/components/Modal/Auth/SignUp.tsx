@@ -1,11 +1,11 @@
 import { authModalState } from "@/atom/authModalAtom";
-import { Button, Flex, Input, Text } from "@chakra-ui/react";
+import { Input, Button, Flex, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useSetRecoilState } from "recoil";
 
-type LogInProps = {};
+type SignUpProps = {};
 
-const LogIn: React.FC<LogInProps> = () => {
+const SignUp: React.FC = () => {
   const setModalState = useSetRecoilState(authModalState);
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const handleSubmit = (): any => {
@@ -20,7 +20,7 @@ const LogIn: React.FC<LogInProps> = () => {
         required
         type="email"
         name="email"
-        placeholder="Enter your email"
+        placeholder="Email"
         mb={2}
         onChange={(e) => handleChange(e)}
         fontSize="12px"
@@ -44,7 +44,7 @@ const LogIn: React.FC<LogInProps> = () => {
         required
         type="password"
         name="password"
-        placeholder="Enter password"
+        placeholder="Password"
         mb={2}
         onChange={(e) => handleChange(e)}
         fontSize="12px"
@@ -62,26 +62,26 @@ const LogIn: React.FC<LogInProps> = () => {
             transform: "translateY(-13px)",
             fontSize: "12px",
           },
-        }}
+    }}
       />
       <Button width="100%" height="40px" mt="1rem">
         Log In
       </Button>
       <Flex justify="flex-start" align="center" mt="1rem" fontSize={12}>
-        <div>New to attCrowd? </div>
+        <div>Already a crowder? </div>
         <Text
           color="#0079d3"
           decoration="underline"
           ml={1}
           cursor="pointer"
           onClick={() => {
-            setModalState((prev) => ({ ...prev, view: "signup" }));
+            setModalState((prev) => ({ ...prev, view: "login" }));
           }}
         >
-          Sign Up
+          Log In
         </Text>
       </Flex>
     </form>
   );
 };
-export default LogIn;
+export default SignUp;
