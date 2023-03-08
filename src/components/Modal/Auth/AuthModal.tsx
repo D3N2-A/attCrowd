@@ -21,7 +21,13 @@ const AuthModal: React.FC = () => {
   };
   return (
     <>
-      <Modal isOpen={modalState.open} onClose={handleClose}>
+      <Modal
+        isOpen={modalState.open}
+        onClose={handleClose}
+        isCentered
+        motionPreset="scale"
+        size="xs"
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
@@ -62,7 +68,7 @@ const AuthModal: React.FC = () => {
                 <span
                   style={{ borderTop: "1px solid #edeff1", width: "40%" }}
                 ></span>
-                <span style={{ fontSize: "0.875rem", margin: "1.5rem" }}>
+                <span style={{ fontSize: "0.765rem", margin: "1.5rem" }}>
                   OR
                 </span>
                 <span

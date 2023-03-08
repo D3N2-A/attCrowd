@@ -20,7 +20,7 @@ const LogIn: React.FC<LogInProps> = () => {
         required
         type="email"
         name="email"
-        placeholder="Enter your email"
+        placeholder="Email"
         mb={2}
         onChange={(e) => handleChange(e)}
         fontSize="12px"
@@ -28,7 +28,7 @@ const LogIn: React.FC<LogInProps> = () => {
         fontWeight={500}
         _placeholder={{
           color: "gray.500",
-          fontSize: "14px",
+          fontSize: "12px",
           transition: "all 0.2s ease-in-out",
         }}
         transition="all 0.2s"
@@ -36,7 +36,7 @@ const LogIn: React.FC<LogInProps> = () => {
           border: "1px solid #00000033",
           _placeholder: {
             transform: "translateY(-13px)",
-            fontSize: "12px",
+            fontSize: "10px",
           },
         }}
       />
@@ -44,7 +44,7 @@ const LogIn: React.FC<LogInProps> = () => {
         required
         type="password"
         name="password"
-        placeholder="Enter password"
+        placeholder="Password"
         mb={2}
         onChange={(e) => handleChange(e)}
         fontSize="12px"
@@ -52,7 +52,7 @@ const LogIn: React.FC<LogInProps> = () => {
         fontWeight={500}
         _placeholder={{
           color: "gray.500",
-          fontSize: "14px",
+          fontSize: "12px",
           transition: "all 0.2s ease-in-out",
         }}
         transition="all 0.2s"
@@ -60,7 +60,7 @@ const LogIn: React.FC<LogInProps> = () => {
           border: "1px solid #00000033",
           _placeholder: {
             transform: "translateY(-13px)",
-            fontSize: "12px",
+            fontSize: "10px",
           },
         }}
       />
