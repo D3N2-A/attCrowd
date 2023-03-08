@@ -11,6 +11,7 @@ import {
 import React from "react";
 import { authModalState } from "@/atom/authModalAtom";
 import AuthInputs from "./AuthInputs";
+import OAuthButtons from "./OAuthButtons";
 
 const AuthModal: React.FC = () => {
   const [modalState, setModalState] = useRecoilState(authModalState);
@@ -47,7 +48,7 @@ const AuthModal: React.FC = () => {
             <Flex
               align="center"
               justify="center"
-              width="70%"
+              width="80%"
               flexDirection="column"
               pb={6}
             >
@@ -63,21 +64,26 @@ const AuthModal: React.FC = () => {
                 </a>
                 .
               </p>
+              <OAuthButtons />
 
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  margin: "1rem 0",
+                }}
+              >
                 <span
                   style={{ borderTop: "1px solid #edeff1", width: "40%" }}
                 ></span>
-                <span style={{ fontSize: "0.765rem", margin: "1.5rem" }}>
-                  OR
-                </span>
+                <span style={{ fontSize: "0.765rem" }}>OR</span>
                 <span
                   style={{ borderTop: "1px solid #edeff1", width: "40%" }}
                 ></span>
               </div>
+
               <AuthInputs />
               {/* 
-              <OAuthButtons/>
               <ResetPassword/>
               */}
             </Flex>
