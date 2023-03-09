@@ -17,7 +17,6 @@ const LogIn: React.FC<LogInProps> = () => {
     if (loginData.email && loginData.password) {
       signInWithEmailAndPassword(loginData.email, loginData.password);
     }
-    console.log(error?.message);
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -84,6 +83,21 @@ const LogIn: React.FC<LogInProps> = () => {
       >
         Log In
       </Button>
+      <Flex justifyContent="center" mb={2}>
+        <Text fontSize="9pt" mr={1}>
+          Forgot your password?
+        </Text>
+        <Text
+          fontSize="9pt"
+          color="blue.500"
+          cursor="pointer"
+          onClick={() => {
+            setModalState((prev) => ({ ...prev, view: "resetpassword" }));
+          }}
+        >
+          Reset
+        </Text>
+      </Flex>
       <Flex justify="flex-start" align="center" mt="1rem" fontSize={12}>
         <div>New to attCrowd? </div>
         <Text
