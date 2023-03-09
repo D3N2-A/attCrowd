@@ -11,6 +11,7 @@ import React from "react";
 import { AiOutlineLogin } from "react-icons/ai";
 import { BiChevronDown } from "react-icons/bi";
 import { HiHome } from "react-icons/hi";
+import Communities from "./Communities";
 
 const Directory: React.FC = () => {
   return (
@@ -32,14 +33,7 @@ const Directory: React.FC = () => {
           </MenuButton>
 
           <MenuList>
-            <MenuItem>
-              <Flex justify="center" align="center">
-                <AiOutlineLogin fontSize={20} />
-                <Text ml={4} fontSize="0.8rem" fontWeight={500}>
-                  Log In/Sign Up
-                </Text>
-              </Flex>
-            </MenuItem>
+            <Communities />
           </MenuList>
         </Menu>
       </Flex>
