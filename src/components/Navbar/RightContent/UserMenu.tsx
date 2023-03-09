@@ -22,7 +22,7 @@ import { useSetRecoilState } from "recoil";
 import { authModalState } from "@/atom/authModalAtom";
 
 type UserMenuProps = {
-  user: User;
+  user?: User | null;
 };
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {

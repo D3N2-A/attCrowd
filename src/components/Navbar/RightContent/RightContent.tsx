@@ -8,7 +8,7 @@ import Icons from "./Icons";
 import UserMenu from "./UserMenu";
 
 type RightContentProps = {
-  user: User;
+  user?: User | null;
 };
 
 const RightContent: React.FC<RightContentProps> = ({ user }) => {
