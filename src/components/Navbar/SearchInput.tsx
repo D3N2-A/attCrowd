@@ -19,6 +19,7 @@ const SearchInput: React.FC<SearchInputProps> = () => {
           bg="gray.50"
           height="34px"
           placeholder="Search attCrowd"
+          borderRadius={50}
           _placeholder={{ color: "gray.500" }}
           _hover={{
             bg: "white",

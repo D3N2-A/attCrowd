@@ -4,6 +4,7 @@ import { Button, Flex } from "@chakra-ui/react";
 import { signOut } from "firebase/auth";
 import React from "react";
 import AuthButton from "./AuthButton";
+import Icons from "./Icons";
 
 type RightContentProps = {
   user: any;
@@ -17,17 +18,7 @@ const RightContent: React.FC<RightContentProps> = ({ user }) => {
 
       <AuthModal />
       <Flex align="center" justify="center">
-        {user ? (
-          <Button
-            onClick={() => {
-              signOut(auth);
-            }}
-          >
-            Sign Out
-          </Button>
-        ) : (
-          <AuthButton />
-        )}
+        {user ? <Icons /> : <AuthButton />}
       </Flex>
     </>
   );
