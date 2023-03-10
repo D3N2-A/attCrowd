@@ -21,7 +21,14 @@ import { RiUser3Fill } from "react-icons/ri";
 import { GiEyeOfHorus, GiPrivateFirstClass } from "react-icons/gi";
 import React, { useState } from "react";
 import { AiOutlineUser } from "react-icons/ai";
-import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  runTransaction,
+  serverTimestamp,
+  setDoc,
+  Transaction,
+} from "firebase/firestore";
 import { auth, firestore } from "@/firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { ErrorData } from "@firebase/util";
@@ -64,20 +71,31 @@ const CreateCommunityModal: React.FC<CreateCommunityModaProps> = ({
 
     try {
       const communityDocRef = doc(firestore, "communities", communityName);
-      const communityDoc = await getDoc(communityDocRef);
-
-      if (communityDoc.exists()) {
-        throw Error(`Sorry, r/${communityName} is already taken, Try Another`);
-      }
       //creator id
       //created at
       //communitytype
       //number of members
-      await setDoc(communityDocRef, {
-        creatorId: user?.uid,
-        createdAt: serverTimestamp(),
-        numberOfMembers: 1,
-        privacyType: communityType,
+      await runTransaction(firestore, async (transaction) => {
+        const communityDoc = await transaction.get(communityDocRef);
+        if (communityDoc.exists()) {
+          throw new Error(
+            `Sorry, r/${communityName} is already taken, Try Another`
+          );
+        }
+        transaction.set(communityDocRef, {
+          creatorId: user?.uid,
+          createdAt: serverTimestamp(),
+          numberOfMembers: 1,
+          privacyType: communityType,
+        });
+        //set communitySnippet added as a subcollection
+        transaction.set(
+          doc(firestore, `users/${user?.uid}/communitySnippets`, communityName),
+          {
+            communityId: communityName,
+            isModerator: true,
+          }
+        );
       });
     } catch (error: any) {
       console.log("Error creating user", error);
