@@ -21,6 +21,10 @@ import { RiUser3Fill } from "react-icons/ri";
 import { GiEyeOfHorus, GiPrivateFirstClass } from "react-icons/gi";
 import React, { useState } from "react";
 import { AiOutlineUser } from "react-icons/ai";
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+import { auth, firestore } from "@/firebase/clientApp";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { ErrorData } from "@firebase/util";
 
 type CreateCommunityModaProps = {
   open: boolean;
@@ -31,6 +35,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModaProps> = ({
   open,
   handleClose,
 }) => {
+  const [user] = useAuthState(auth);
   const [communityName, setCommunityName] = useState("");
   const [communityType, setCommunityType] = useState("Public");
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,6 +43,48 @@ const CreateCommunityModal: React.FC<CreateCommunityModaProps> = ({
       return;
     }
     setCommunityName(e.target.value);
+  };
+
+  //-------------------creating community------------------//
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleCommunityCreate = async () => {
+    if (error) setError("");
+    //check validity of name
+    const format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    if (format.test(communityName) || communityName.length > 21) {
+      setError("Community name invalid!");
+      return;
+    }
+
+    setLoading(true);
+    //check for duplicate
+    //get ref get doc check for already existing
+
+    try {
+      const communityDocRef = doc(firestore, "communities", communityName);
+      const communityDoc = await getDoc(communityDocRef);
+
+      if (communityDoc.exists()) {
+        throw Error(`Sorry, r/${communityName} is already taken, Try Another`);
+      }
+      //creator id
+      //created at
+      //communitytype
+      //number of members
+      await setDoc(communityDocRef, {
+        creatorId: user?.uid,
+        createdAt: serverTimestamp(),
+        numberOfMembers: 1,
+        privacyType: communityType,
+      });
+    } catch (error: any) {
+      console.log("Error creating user", error);
+      setError(error.message);
+    }
+
+    setLoading(false);
   };
   return (
     <>
@@ -90,6 +137,12 @@ const CreateCommunityModal: React.FC<CreateCommunityModaProps> = ({
               >
                 {21 - communityName?.length} characters left
               </Text>
+
+              {error && (
+                <Text mt={2} fontSize={11} color={"red"}>
+                  {error}
+                </Text>
+              )}
 
               <Box margin="4px 0" mt={4}>
                 <Text fontSize={15} fontWeight={500}>
@@ -155,7 +208,14 @@ const CreateCommunityModal: React.FC<CreateCommunityModaProps> = ({
             >
               Cancel
             </Button>
-            <Button variant="solid" height="28px">
+            <Button
+              variant="solid"
+              height="28px"
+              onClick={() => {
+                handleCommunityCreate();
+              }}
+              isLoading={loading}
+            >
               Create Community
             </Button>
           </ModalFooter>
