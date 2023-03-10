@@ -83,6 +83,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModaProps> = ({
           );
         }
         transaction.set(communityDocRef, {
+          id: communityName,
           creatorId: user?.uid,
           createdAt: serverTimestamp(),
           numberOfMembers: 1,
@@ -137,7 +138,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModaProps> = ({
                 left="10px"
                 width="20px"
               >
-                r/
+                a/
               </Text>
               <Input
                 _focus={{ borderColor: "black" }}
