@@ -1,9 +1,9 @@
+import { auth, firestore } from "@/firebase/clientApp";
 import {
   Box,
   Button,
   Divider,
-  Flex,
-  Input,
+  Flex, Icon, Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -13,25 +13,16 @@ import {
   ModalOverlay,
   Radio,
   RadioGroup,
-  Stack,
-  Icon,
-  Text,
+  Stack, Text
 } from "@chakra-ui/react";
-import { RiUser3Fill } from "react-icons/ri";
-import { GiEyeOfHorus, GiPrivateFirstClass } from "react-icons/gi";
-import React, { useState } from "react";
-import { AiOutlineUser } from "react-icons/ai";
 import {
-  doc,
-  getDoc,
-  runTransaction,
-  serverTimestamp,
-  setDoc,
-  Transaction,
+  doc, runTransaction,
+  serverTimestamp
 } from "firebase/firestore";
-import { auth, firestore } from "@/firebase/clientApp";
+import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { ErrorData } from "@firebase/util";
+import { AiOutlineUser } from "react-icons/ai";
+import { GiEyeOfHorus, GiPrivateFirstClass } from "react-icons/gi";
 
 type CreateCommunityModaProps = {
   open: boolean;
