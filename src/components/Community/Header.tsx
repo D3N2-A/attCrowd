@@ -1,6 +1,10 @@
 import { Community } from "@/atom/communitiesAtom";
+import { auth, firestore } from "@/firebase/clientApp";
+import useCommunityData from "@/hooks/useCommunityData";
 import { Box, Button, Flex, Icon, Image, Text } from "@chakra-ui/react";
-import React from "react";
+import { collection, getDocs } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { FaReddit } from "react-icons/fa";
 
 type HeaderProps = {
@@ -8,7 +12,14 @@ type HeaderProps = {
 };
 
 const Header: React.FC<HeaderProps> = ({ communityData }) => {
-  const isJoined = false;
+  const { communityStateValue, onJoinLeaveCommunity } = useCommunityData();
+
+  const isJoined = Boolean(
+    communityStateValue.mySnippets.find(
+      (item) => item.communityId === communityData.id
+    )
+  );
+
   // community snippets to be used
   return (
     <Flex direction="column" width="100%" height="146px">
@@ -42,7 +53,7 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
                 height="30px"
                 pr={6}
                 pl={6}
-                //   onClick={() => onJoinLeaveCommunity(communityData, isJoined)}
+                onClick={() => onJoinLeaveCommunity(communityData, isJoined)}
                 //   isLoading={loading}
               >
                 {isJoined ? "Joined" : "Join"}

@@ -12,7 +12,7 @@ export interface Community {
 
 // we need to store community related data in order to access it globally
 
-interface CommunitySnippet {
+export interface CommunitySnippet {
   communityId: string;
   isModerator?: boolean;
   imageURL?: string;
