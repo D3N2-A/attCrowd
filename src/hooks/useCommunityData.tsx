@@ -11,7 +11,7 @@ import { useRecoilState } from "recoil";
 
 const useCommunityData = () => {
   const [user] = useAuthState(auth);
-  const [loading, isLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [communityStateValue, setCommunityStateValue] =
     useRecoilState(communityState);
@@ -22,6 +22,7 @@ const useCommunityData = () => {
     communityData: Community,
     isJoined: boolean
   ) => {
+    setLoading(true);
     //check if user is login
     //open loginDialog
     //is loggedin
