@@ -1,3 +1,4 @@
+import { authModalState } from "@/atom/authModalAtom";
 import {
   Community,
   CommunitySnippet,
@@ -7,15 +8,21 @@ import { auth, firestore } from "@/firebase/clientApp";
 import { collection, getDocs } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 const useCommunityData = () => {
   const [user] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  //-------------community state hook-------------------//
+
   const [communityStateValue, setCommunityStateValue] =
     useRecoilState(communityState);
 
+  //-------------user dialog setter--------------------//
+  const setUserDialog = useSetRecoilState(authModalState);
+
+  //-------------community function handeling----------//
   const joinCommunity = (communityData: Community) => {};
   const leaveCommunity = (communityId: string) => {};
   const onJoinLeaveCommunity = (
@@ -23,6 +30,10 @@ const useCommunityData = () => {
     isJoined: boolean
   ) => {
     //check if user is login
+    if (!user) {
+      setUserDialog((prev) => ({ ...prev, open: true }));
+      return;
+    }
     //open loginDialog
     //is loggedin
     //check if community is joined then call leaveCommunity else join community
@@ -32,6 +43,8 @@ const useCommunityData = () => {
     }
     joinCommunity(communityData);
   };
+
+  //--------------getting snippet from db-------------//
 
   const getSnippets = async () => {
     setLoading(true);
@@ -53,6 +66,7 @@ const useCommunityData = () => {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     if (!user) {
       return;
