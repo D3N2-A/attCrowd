@@ -12,7 +12,8 @@ type HeaderProps = {
 };
 
 const Header: React.FC<HeaderProps> = ({ communityData }) => {
-  const { communityStateValue, onJoinLeaveCommunity } = useCommunityData();
+  const { communityStateValue, onJoinLeaveCommunity, loading } =
+    useCommunityData();
 
   const isJoined = Boolean(
     communityStateValue.mySnippets.find(
@@ -54,7 +55,7 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
                 pr={6}
                 pl={6}
                 onClick={() => onJoinLeaveCommunity(communityData, isJoined)}
-                //   isLoading={loading}
+                isLoading={loading}
               >
                 {isJoined ? "Joined" : "Join"}
               </Button>

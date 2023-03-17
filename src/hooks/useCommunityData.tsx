@@ -22,7 +22,6 @@ const useCommunityData = () => {
     communityData: Community,
     isJoined: boolean
   ) => {
-    setLoading(true);
     //check if user is login
     //open loginDialog
     //is loggedin
@@ -35,6 +34,7 @@ const useCommunityData = () => {
   };
 
   const getSnippets = async () => {
+    setLoading(true);
     try {
       const snippetDoc = await getDocs(
         collection(firestore, `users/${user?.uid}/communitySnippets`)
@@ -47,8 +47,10 @@ const useCommunityData = () => {
           mySnippets: snippets as Array<CommunitySnippet>,
         };
       });
+      setLoading(false);
     } catch (error) {
       setError(error as string);
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -60,6 +62,7 @@ const useCommunityData = () => {
   return {
     communityStateValue,
     onJoinLeaveCommunity,
+    loading,
   };
 };
 export default useCommunityData;

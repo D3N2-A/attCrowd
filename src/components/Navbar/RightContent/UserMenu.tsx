@@ -18,8 +18,9 @@ import { BsEscape } from "react-icons/bs";
 import { AiOutlineLogin } from "react-icons/ai";
 import { HiSparkles } from "react-icons/hi";
 import { auth } from "@/firebase/clientApp";
-import { useSetRecoilState } from "recoil";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
 import { authModalState } from "@/atom/authModalAtom";
+import { communityState } from "@/atom/communitiesAtom";
 
 type UserMenuProps = {
   user?: User | null;
@@ -27,6 +28,12 @@ type UserMenuProps = {
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const setAuthModalState = useSetRecoilState(authModalState);
+  const resetCommunity = useResetRecoilState(communityState);
+  const logout = async () => {
+    signOut(auth);
+    //clear community state
+    resetCommunity();
+  };
   return (
     <>
       <Menu>
@@ -90,11 +97,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                 </Text>
               </Flex>
             </MenuItem>
-            <MenuItem
-              onClick={() => {
-                signOut(auth);
-              }}
-            >
+            <MenuItem onClick={logout}>
               <Flex justify="center" align="center">
                 <BsEscape fontSize={20} />
                 <Text ml={4} fontSize="0.8rem" fontWeight={500}>
