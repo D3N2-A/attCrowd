@@ -6,7 +6,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { GetServerSidePropsContext } from "next";
 import React, { useEffect } from "react";
 import PageContent from "@/components/Layout/PageContent";
-import CreateCommunityBox from "@/components/Community/CreateCommunityBox";
+import CreateCommunityBox from "@/components/Community/CreateCommunityPostBox";
 
 type CommunityPageProps = {
   communityData: Community;

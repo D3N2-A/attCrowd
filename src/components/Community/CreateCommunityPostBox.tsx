@@ -10,7 +10,7 @@ import { BiImages } from "react-icons/bi";
 import { BsLink45Deg } from "react-icons/bs";
 import { useSetRecoilState } from "recoil";
 
-const CreateCommunityBox: React.FC = () => {
+const CreateCommunityPostBox: React.FC = () => {
   const [user] = useAuthState(auth);
 
   const router = useRouter();
@@ -88,4 +88,4 @@ const CreateCommunityBox: React.FC = () => {
     </Flex>
   );
 };
-export default CreateCommunityBox;
+export default CreateCommunityPostBox;
