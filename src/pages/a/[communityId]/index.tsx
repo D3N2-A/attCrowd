@@ -6,6 +6,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { GetServerSidePropsContext } from "next";
 import React, { useEffect } from "react";
 import PageContent from "@/components/Layout/PageContent";
+import CreateCommunityBox from "@/components/Community/CreateCommunityBox";
 
 type CommunityPageProps = {
   communityData: Community;
@@ -20,7 +21,7 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
       <Header communityData={communityData} />
       <PageContent>
         <>
-          <div>LHS</div>
+          <CreateCommunityBox />
         </>
         <>
           <div>RHS</div>
