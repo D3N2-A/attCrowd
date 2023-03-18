@@ -30,6 +30,7 @@ const useCommunityData = () => {
 
   //-------------community function handeling----------//
   const joinCommunity = async (communityData: Community) => {
+    setLoading(true);
     try {
       const batch = writeBatch(firestore);
 
@@ -48,35 +49,60 @@ const useCommunityData = () => {
           isModerator: true,
         };
         batch.set(communitySnippetsRef, newSnippet);
+        //update recoil state of community snippet
+        setCommunityStateValue((prev) => ({
+          ...prev,
+          mySnippets: [...prev.mySnippets, newSnippet],
+        }));
       } else {
         const newSnippet: CommunitySnippet = {
           communityId: communityData.id,
           imageURL: communityData.imageURL || "",
         };
         batch.set(communitySnippetsRef, newSnippet);
+        //update recoil state of community snippet
+        setCommunityStateValue((prev) => ({
+          ...prev,
+          mySnippets: [...prev.mySnippets, newSnippet],
+        }));
       }
       batch.update(communityRef, {
         numberOfMembers: increment(1),
       });
       await batch.commit();
-      //update recoil state of community snippet
     } catch (error: any) {
       console.log("community Join error", error);
       setError(error.message);
     }
+    setLoading(false);
   };
-  const leaveCommunity = async (communityId: string) => {
-    const batch = writeBatch(firestore);
 
-    const communitySnippetsRef = doc(
-      firestore,
-      `users/${user?.uid}/communitySnippets`,
-      communityId
-    );
-    const communityRef = doc(firestore, `communities`, communityId);
-    batch.delete(communitySnippetsRef);
-    batch.update(communityRef, { numberOfMembers: increment(1) });
-    await batch.commit();
+  const leaveCommunity = async (communityId: string) => {
+    setLoading(true);
+    try {
+      const batch = writeBatch(firestore);
+
+      const communitySnippetsRef = doc(
+        firestore,
+        `users/${user?.uid}/communitySnippets`,
+        communityId
+      );
+      const communityRef = doc(firestore, `communities`, communityId);
+      batch.delete(communitySnippetsRef);
+      batch.update(communityRef, { numberOfMembers: increment(-1) });
+      await batch.commit();
+      //update recoil state of community snippet
+      setCommunityStateValue((prev) => ({
+        ...prev,
+        mySnippets: prev.mySnippets.filter(
+          (item) => item.communityId !== communityId
+        ),
+      }));
+    } catch (error: any) {
+      console.log("community Leave error", error);
+      setError(error.message);
+    }
+    setLoading(false);
   };
   const onJoinLeaveCommunity = (
     communityData: Community,
