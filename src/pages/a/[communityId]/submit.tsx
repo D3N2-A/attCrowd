@@ -7,7 +7,12 @@ const submit: React.FC = () => {
   return (
     <PageContent>
       <>
-        <Box p="14px 0px" borderBottom="1px solid" borderColor="white">
+        <Box
+          p="14px 0px"
+          borderBottom="1px solid"
+          borderColor="white"
+          mt="1rem"
+        >
           <Text fontWeight={600}>Create a post</Text>
         </Box>
         <NewPostForm />

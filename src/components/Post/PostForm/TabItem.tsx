@@ -5,7 +5,7 @@ import { Tabitem } from "./NewPostForm";
 type TabItemProps = {
   item: Tabitem;
   isSelected: boolean;
-  setSelectedTab: Function;
+  setSelectedTab: (value: string) => void;
 };
 
 const TabItem: React.FC<TabItemProps> = ({
@@ -19,6 +19,8 @@ const TabItem: React.FC<TabItemProps> = ({
       gap={2}
       flexGrow={1}
       height="fit-content"
+      cursor="pointer"
+      transition="0.2s ease-in-out all"
       borderWidth="1px"
       _hover={{ backgroundColor: "#edeff1" }}
       borderBottomColor={isSelected ? "black" : "#edeff1"}
@@ -31,7 +33,11 @@ const TabItem: React.FC<TabItemProps> = ({
           fontSize={20}
         />
       </Flex>
-      <Text color={isSelected ? "black" : "#878a8c"} fontSize="0.875rem">
+      <Text
+        color={isSelected ? "black" : "#878a8c"}
+        fontWeight={700}
+        fontSize="10pt"
+      >
         {item.title}
       </Text>
     </Flex>

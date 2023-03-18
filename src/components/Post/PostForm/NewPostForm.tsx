@@ -5,6 +5,7 @@ import { BsLink45Deg, BsMic } from "react-icons/bs";
 import { IoDocumentText, IoImageOutline } from "react-icons/io5";
 import { AiFillCloseCircle } from "react-icons/ai";
 import TabItem from "./TabItem";
+import TextInputs from "./TextInputs";
 
 const formTabs = [
   {
@@ -35,6 +36,17 @@ export type Tabitem = {
 
 const NewPostForm: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title);
+  const [textInputs, setTextInputs] = useState({
+    title: "",
+    body: "",
+  });
+  const onTextChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setTextInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+  const handleCreatePost = async () => {};
+
   return (
     <Flex direction="column" bg="white" borderRadius={4} mt={2}>
       <Flex>
@@ -46,6 +58,16 @@ const NewPostForm: React.FC = () => {
             isSelected={selectedTab === item.title}
           />
         ))}
+      </Flex>
+      <Flex>
+        {selectedTab === "Post" && (
+          <TextInputs
+            loading={false}
+            onTextChange={onTextChange}
+            textInputs={textInputs}
+            handleCreatePost={handleCreatePost}
+          />
+        )}
       </Flex>
     </Flex>
   );
