@@ -3,7 +3,9 @@ import {
   Box,
   Button,
   Divider,
-  Flex, Icon, Input,
+  Flex,
+  Icon,
+  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -13,12 +15,10 @@ import {
   ModalOverlay,
   Radio,
   RadioGroup,
-  Stack, Text
+  Stack,
+  Text,
 } from "@chakra-ui/react";
-import {
-  doc, runTransaction,
-  serverTimestamp
-} from "firebase/firestore";
+import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
 import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { AiOutlineUser } from "react-icons/ai";

@@ -5,7 +5,13 @@ import {
   communityState,
 } from "@/atom/communitiesAtom";
 import { auth, firestore } from "@/firebase/clientApp";
-import { collection, getDocs } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  increment,
+  writeBatch,
+} from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -23,8 +29,55 @@ const useCommunityData = () => {
   const setUserDialog = useSetRecoilState(authModalState);
 
   //-------------community function handeling----------//
-  const joinCommunity = (communityData: Community) => {};
-  const leaveCommunity = (communityId: string) => {};
+  const joinCommunity = async (communityData: Community) => {
+    try {
+      const batch = writeBatch(firestore);
+
+      const communitySnippetsRef = doc(
+        firestore,
+        `users/${user?.uid}/communitySnippets`,
+        communityData.id
+      );
+      const communityRef = doc(firestore, `communities`, communityData.id);
+      //check is user origanally created community
+
+      if (communityData.creatorId === user?.uid) {
+        const newSnippet: CommunitySnippet = {
+          communityId: communityData.id,
+          imageURL: communityData.imageURL || "",
+          isModerator: true,
+        };
+        batch.set(communitySnippetsRef, newSnippet);
+      } else {
+        const newSnippet: CommunitySnippet = {
+          communityId: communityData.id,
+          imageURL: communityData.imageURL || "",
+        };
+        batch.set(communitySnippetsRef, newSnippet);
+      }
+      batch.update(communityRef, {
+        numberOfMembers: increment(1),
+      });
+      await batch.commit();
+      //update recoil state of community snippet
+    } catch (error: any) {
+      console.log("community Join error", error);
+      setError(error.message);
+    }
+  };
+  const leaveCommunity = async (communityId: string) => {
+    const batch = writeBatch(firestore);
+
+    const communitySnippetsRef = doc(
+      firestore,
+      `users/${user?.uid}/communitySnippets`,
+      communityId
+    );
+    const communityRef = doc(firestore, `communities`, communityId);
+    batch.delete(communitySnippetsRef);
+    batch.update(communityRef, { numberOfMembers: increment(1) });
+    await batch.commit();
+  };
   const onJoinLeaveCommunity = (
     communityData: Community,
     isJoined: boolean

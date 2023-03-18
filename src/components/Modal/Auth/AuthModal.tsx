@@ -65,7 +65,7 @@ const AuthModal: React.FC = () => {
                   flexDirection="column"
                   pb={6}
                 >
-                  <p style={{ fontSize: "12px", fontWeight: "thin" }}>
+                  <div style={{ fontSize: "12px", fontWeight: "thin" }}>
                     By continuing, you agree are setting up a Reddit account and
                     agree to our{" "}
                     <a
@@ -76,7 +76,7 @@ const AuthModal: React.FC = () => {
                       User Agreement and Privacy Policy
                     </a>
                     .
-                  </p>
+                  </div>
                   <OAuthButtons />
 
                   <div
