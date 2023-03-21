@@ -48,8 +48,11 @@ const NewPostForm: React.FC = () => {
   ) => {
     setTextInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-  //-----------------Handle input of file----------------//
+
+  //-----------------Handle post creation-----------------//
+  
   const handleCreatePost = async () => {};
+  //-----------------Handle input of file----------------//
   const onSelectImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
 
