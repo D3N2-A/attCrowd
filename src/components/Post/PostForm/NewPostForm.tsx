@@ -6,6 +6,7 @@ import { IoDocumentText, IoImageOutline } from "react-icons/io5";
 import { AiFillCloseCircle } from "react-icons/ai";
 import TabItem from "./TabItem";
 import TextInputs from "./TextInputs";
+import ImageUpload from "./ImageUpload";
 
 const formTabs = [
   {
@@ -35,17 +36,33 @@ export type Tabitem = {
 };
 
 const NewPostForm: React.FC = () => {
+  const [selectedFile, setSelectedFile] = useState<string>();
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title);
   const [textInputs, setTextInputs] = useState({
     title: "",
     body: "",
   });
+  //----------------Handle text change---------------------//
   const onTextChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setTextInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+  //-----------------Handle input of file----------------//
   const handleCreatePost = async () => {};
+  const onSelectImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+
+    if (e.target.files?.[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
+
+    reader.onload = (readeEvent) => {
+      if (readeEvent.target?.result) {
+        setSelectedFile(readeEvent.target.result as string);
+      }
+    };
+  };
 
   return (
     <Flex direction="column" bg="white" borderRadius={4} mt={2}>
@@ -59,13 +76,21 @@ const NewPostForm: React.FC = () => {
           />
         ))}
       </Flex>
-      <Flex>
+      <Flex p={4}>
         {selectedTab === "Post" && (
           <TextInputs
             loading={false}
             onTextChange={onTextChange}
             textInputs={textInputs}
             handleCreatePost={handleCreatePost}
+          />
+        )}
+        {selectedTab === "Images & Video" && (
+          <ImageUpload
+            onSelectImage={onSelectImage}
+            selectedFile={selectedFile}
+            setSelectedFile={setSelectedFile}
+            setSelectedTab={setSelectedTab}
           />
         )}
       </Flex>
