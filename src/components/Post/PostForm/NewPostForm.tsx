@@ -7,6 +7,18 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import TabItem from "./TabItem";
 import TextInputs from "./TextInputs";
 import ImageUpload from "./ImageUpload";
+import { Post } from "@/atom/postsAtom";
+import { User } from "firebase/auth";
+import { useRouter } from "next/router";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { firestore, storage } from "@/firebase/clientApp";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
 
 const formTabs = [
   {
@@ -35,13 +47,17 @@ export type Tabitem = {
   icon: typeof Icon.arguments;
 };
 
-const NewPostForm: React.FC = () => {
+type NewPostFormProps = { user: User };
+
+const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
+  const [laoding, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<string>();
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title);
   const [textInputs, setTextInputs] = useState({
     title: "",
     body: "",
   });
+  const router = useRouter();
   //----------------Handle text change---------------------//
   const onTextChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -52,10 +68,41 @@ const NewPostForm: React.FC = () => {
   //-----------------Handle post creation-----------------//
 
   const handleCreatePost = async () => {
-    
-    //create a new post in db
-    //upload image
-    //append image to post
+    const { communityID } = router.query;
+
+    //create a post of type Post
+    const newPost: Post = {
+      creatorId: user.uid,
+      creatorDisplayName: user.displayName!,
+      communityId: communityID as string,
+      title: textInputs.title,
+      body: textInputs.body,
+      voteStatus: 1,
+      numberOfComments: 0,
+      createdAt: serverTimestamp() as Timestamp,
+    };
+
+    setLoading(true);
+    try {
+      //store new post in db
+      const postDocRef = await addDoc(collection(firestore, "posts"), newPost);
+
+      //check if file exists
+      if (selectedFile) {
+        const imageRef = ref(storage, `posts/${postDocRef.id}/image`);
+        //upload image
+        await uploadString(imageRef, selectedFile, "data_url");
+        const downloadURL = getDownloadURL(imageRef);
+        //append image to post
+        updateDoc(postDocRef, { imageURL: downloadURL });
+      }
+    } catch (error: any) {
+      console.log("error making post", error.message);
+    }
+    setLoading(false);
+
+    //redirect to community
+    // router.back();
   };
   //-----------------Handle input of file----------------//
   const onSelectImage = (e: React.ChangeEvent<HTMLInputElement>) => {
