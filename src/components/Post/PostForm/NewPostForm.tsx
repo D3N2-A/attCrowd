@@ -50,8 +50,13 @@ const NewPostForm: React.FC = () => {
   };
 
   //-----------------Handle post creation-----------------//
-  
-  const handleCreatePost = async () => {};
+
+  const handleCreatePost = async () => {
+    
+    //create a new post in db
+    //upload image
+    //append image to post
+  };
   //-----------------Handle input of file----------------//
   const onSelectImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
