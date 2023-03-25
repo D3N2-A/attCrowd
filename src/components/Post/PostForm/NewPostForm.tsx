@@ -1,4 +1,11 @@
-import { Flex, Icon } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  Flex,
+  Icon,
+  Text,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 import { BiPoll } from "react-icons/bi";
 import { BsLink45Deg, BsMic } from "react-icons/bs";
@@ -50,7 +57,8 @@ export type Tabitem = {
 type NewPostFormProps = { user: User };
 
 const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
-  const [laoding, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [selectedFile, setSelectedFile] = useState<string>();
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title);
   const [textInputs, setTextInputs] = useState({
@@ -68,13 +76,13 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
   //-----------------Handle post creation-----------------//
 
   const handleCreatePost = async () => {
-    const { communityID } = router.query;
-
+    setError(false);
+    const { communityId } = router.query;
     //create a post of type Post
     const newPost: Post = {
       creatorId: user.uid,
       creatorDisplayName: user.displayName!,
-      communityId: communityID as string,
+      communityId: communityId as string,
       title: textInputs.title,
       body: textInputs.body,
       voteStatus: 1,
@@ -92,17 +100,18 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
         const imageRef = ref(storage, `posts/${postDocRef.id}/image`);
         //upload image
         await uploadString(imageRef, selectedFile, "data_url");
-        const downloadURL = getDownloadURL(imageRef);
+        const downloadURL = await getDownloadURL(imageRef);
         //append image to post
         updateDoc(postDocRef, { imageURL: downloadURL });
       }
     } catch (error: any) {
       console.log("error making post", error.message);
+      setError(true);
     }
     setLoading(false);
 
     //redirect to community
-    // router.back();
+    router.back();
   };
   //-----------------Handle input of file----------------//
   const onSelectImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -134,7 +143,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
       <Flex p={4}>
         {selectedTab === "Post" && (
           <TextInputs
-            loading={false}
+            loading={loading}
             onTextChange={onTextChange}
             textInputs={textInputs}
             handleCreatePost={handleCreatePost}
@@ -149,6 +158,12 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
           />
         )}
       </Flex>
+      {error && (
+        <Alert status="error">
+          <AlertIcon />
+          <Text>Error creating post</Text>
+        </Alert>
+      )}
     </Flex>
   );
 };
