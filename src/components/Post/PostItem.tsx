@@ -1,7 +1,7 @@
 import { Post } from "@/atom/postsAtom";
-import { Flex, Icon, Image, Stack, Text } from "@chakra-ui/react";
+import { Flex, Icon, Image, Skeleton, Stack, Text } from "@chakra-ui/react";
 import moment from "moment";
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BsBookmark } from "react-icons/bs";
 import { HiOutlineChatBubbleBottomCenter } from "react-icons/hi2";
@@ -28,6 +28,7 @@ const PostItem: React.FC<PostItemProps> = ({
   onSelectPost,
   onVote,
 }) => {
+  const [loadingImage, setLoadingImage] = useState(true);
   return (
     <Flex
       background="white"
@@ -89,9 +90,11 @@ const PostItem: React.FC<PostItemProps> = ({
                 : "images/defaultCommunityImage.svg"
             }
           />
+
           <Text fontWeight={700} _hover={{ textDecoration: "underline" }}>
             a/{post.communityId}
           </Text>
+
           <span
             style={{ verticalAlign: "middle", color: "rgb(120, 124, 126)" }}
           >
@@ -109,19 +112,23 @@ const PostItem: React.FC<PostItemProps> = ({
           </Text>
           <Text fontSize="0.865rem">{post.body}</Text>
         </Stack>
-        <Flex>
-          {post.imageURL ? (
+        {post.imageURL ? (
+          <Flex>
+            {loadingImage && (
+              <Skeleton height="200px" width="100%" borderRadius={4} />
+            )}
             <Image
               border="1px solid"
               borderColor="blackAlpha.300"
               src={post.imageURL}
+              onLoad={() => setLoadingImage(false)}
             />
-          ) : (
-            <Flex paddingLeft={2}>
-              <Text fontSize="0.875rem">{post.body}</Text>
-            </Flex>
-          )}
-        </Flex>
+          </Flex>
+        ) : (
+          <Flex paddingLeft={2}>
+            <Text fontSize="0.875rem">{post.body}</Text>
+          </Flex>
+        )}
         <Flex p={1} gap={2}>
           <Flex
             color="#878A8C"
