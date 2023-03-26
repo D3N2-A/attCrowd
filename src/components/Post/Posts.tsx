@@ -19,6 +19,7 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
       const postDoc = await getDocs(postQuery);
       const posts = postDoc.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       //setting in state using custom hook
+      
     } catch (error: any) {
       console.log(error.message);
     }
