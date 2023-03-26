@@ -7,7 +7,7 @@ import { GetServerSidePropsContext } from "next";
 import React, { useEffect } from "react";
 import PageContent from "@/components/Layout/PageContent";
 import CreateCommunityPostBox from "@/components/Community/CreateCommunityPostBox";
-
+import Posts from "@/components/Post/Posts";
 type CommunityPageProps = {
   communityData: Community;
 };
@@ -22,6 +22,7 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
       <PageContent>
         <>
           <CreateCommunityPostBox />
+          <Posts communityData={communityData} />
         </>
         <>
           <div>RHS</div>

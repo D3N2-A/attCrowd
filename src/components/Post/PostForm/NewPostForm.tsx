@@ -79,21 +79,20 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
     setError(false);
     const { communityId } = router.query;
     //create a post of type Post
-    const newPost: Post = {
-      creatorId: user.uid,
-      creatorDisplayName: user.displayName!,
-      communityId: communityId as string,
-      title: textInputs.title,
-      body: textInputs.body,
-      voteStatus: 1,
-      numberOfComments: 0,
-      createdAt: serverTimestamp() as Timestamp,
-    };
 
     setLoading(true);
     try {
       //store new post in db
-      const postDocRef = await addDoc(collection(firestore, "posts"), newPost);
+      const postDocRef = await addDoc(collection(firestore, "posts"), {
+        creatorId: user.uid,
+        creatorDisplayName: user.displayName!,
+        communityId: communityId as string,
+        title: textInputs.title,
+        body: textInputs.body,
+        voteStatus: 1,
+        numberOfComments: 0,
+        createdAt: serverTimestamp() as Timestamp,
+      });
 
       //check if file exists
       if (selectedFile) {
