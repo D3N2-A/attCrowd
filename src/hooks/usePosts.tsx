@@ -6,11 +6,14 @@ const usePosts = () => {
   const [postStateValue, setPostStateValue] = useRecoilState(postState);
   const onVote = () => {};
   const onSelectPost = () => {};
-  const deletePost = () => {};
+  const onDelete = () => {};
 
   return {
     postStateValue,
     setPostStateValue,
+    onVote,
+    onDelete,
+    onSelectPost,
   };
 };
 export default usePosts;
