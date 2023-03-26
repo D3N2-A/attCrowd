@@ -4,9 +4,9 @@ import { useRecoilState } from "recoil";
 
 const usePosts = () => {
   const [postStateValue, setPostStateValue] = useRecoilState(postState);
-  const onVote = () => {};
+  const onVote = async () => {};
   const onSelectPost = () => {};
-  const onDelete = () => {};
+  const onDelete = async () => {};
 
   return {
     postStateValue,
