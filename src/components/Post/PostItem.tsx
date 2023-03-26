@@ -1,19 +1,22 @@
 import { Post } from "@/atom/postsAtom";
-import { Flex, Stack, Icon, Text, Image } from "@chakra-ui/react";
+import { Flex, Icon, Image, Stack, Text } from "@chakra-ui/react";
+import moment from "moment";
+import React from "react";
+import { AiOutlineDelete } from "react-icons/ai";
+import { BsBookmark } from "react-icons/bs";
+import { HiOutlineChatBubbleBottomCenter } from "react-icons/hi2";
 import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowUp,
 } from "react-icons/md";
-import { TfiQuoteLeft } from "react-icons/tfi";
-import React from "react";
-import { AiOutlineComment } from "react-icons/ai";
+import { TfiQuoteLeft, TfiShare } from "react-icons/tfi";
 
 type PostItemProps = {
   post: Post;
   userIsCreator: boolean;
   userVoteValue?: number;
   onVote: () => {};
-  onDelete: () => {};
+  onDeletePost: () => {};
   onSelectPost: () => void;
 };
 
@@ -21,7 +24,7 @@ const PostItem: React.FC<PostItemProps> = ({
   post,
   userVoteValue,
   userIsCreator,
-  onDelete,
+  onDeletePost,
   onSelectPost,
   onVote,
 }) => {
@@ -49,9 +52,9 @@ const PostItem: React.FC<PostItemProps> = ({
           borderRadius={2}
         >
           <Icon
-            fontSize="20px"
+            fontSize="1.5rem"
             as={MdOutlineKeyboardArrowUp}
-            color={userVoteValue === 1 ? { color: "orange" } : {}}
+            color={userVoteValue === 1 ? "orange" : {}}
             _hover={{ color: "orange" }}
             outline="#898989"
           />
@@ -67,9 +70,10 @@ const PostItem: React.FC<PostItemProps> = ({
           align="center"
         >
           <Icon
-            fontSize="20px"
+            color={userVoteValue === -1 ? "#4379ff" : ""}
+            fontSize="1.5rem"
             as={MdOutlineKeyboardArrowDown}
-            _hover={{ color: "blue" }}
+            _hover={{ color: "#4379ff" }}
           />
         </Flex>
       </Stack>
@@ -95,13 +99,16 @@ const PostItem: React.FC<PostItemProps> = ({
           </span>
           <Text color="rgb(120, 124, 126)">
             Posted by u/{post.creatorDisplayName}
+            {"  "}&nbsp;&nbsp;
+            {moment(new Date(post.createdAt.seconds * 1000)).fromNow()}
           </Text>
         </Flex>
-        <Flex paddingLeft={2}>
+        <Stack paddingLeft={2}>
           <Text fontWeight={500} fontSize="1.125rem">
             {post.title}
           </Text>
-        </Flex>
+          <Text fontSize="0.865rem">{post.body}</Text>
+        </Stack>
         <Flex>
           {post.imageURL ? (
             <Image
@@ -115,18 +122,18 @@ const PostItem: React.FC<PostItemProps> = ({
             </Flex>
           )}
         </Flex>
-        <Flex p={1} gap={1}>
+        <Flex p={1} gap={2}>
           <Flex
             color="#878A8C"
             _hover={{ backgroundColor: "rgb(26 26 27 / 10%)" }}
             borderRadius="2px"
-            gap={2}
+            gap={1}
             height="2rem"
             justify="center"
             padding="4px"
             align="center"
           >
-            <Icon fontSize="20px" as={AiOutlineComment} />
+            <Icon fontSize="20px" as={HiOutlineChatBubbleBottomCenter} />
             <Text fontWeight={700} fontSize="0.765rem">
               {post.numberOfComments} Comments
             </Text>
@@ -135,17 +142,66 @@ const PostItem: React.FC<PostItemProps> = ({
             color="#878A8C"
             _hover={{ backgroundColor: "rgb(26 26 27 / 10%)" }}
             borderRadius="2px"
-            gap={2}
+            gap={1}
             height="2rem"
             justify="center"
             padding="4px"
             align="center"
           >
-            <Icon fontSize="18px" as={TfiQuoteLeft} />
+            <Icon fontSize="17px" as={TfiQuoteLeft} />
             <Text fontWeight={700} fontSize="0.765rem">
               Float
             </Text>
           </Flex>
+          <Flex
+            color="#878A8C"
+            _hover={{ backgroundColor: "rgb(26 26 27 / 10%)" }}
+            borderRadius="2px"
+            gap={1}
+            height="2rem"
+            justify="center"
+            padding="4px"
+            align="center"
+          >
+            <Icon fontSize="17px" as={TfiShare} mb="2px" />
+            <Text fontWeight={700} fontSize="0.765rem">
+              Share
+            </Text>
+          </Flex>
+          <Flex
+            color="#878A8C"
+            _hover={{ backgroundColor: "rgb(26 26 27 / 10%)" }}
+            borderRadius="2px"
+            gap={1}
+            height="2rem"
+            justify="center"
+            padding="4px"
+            align="center"
+          >
+            <Icon fontSize="16px" as={BsBookmark} />
+            <Text fontWeight={700} fontSize="0.765rem">
+              Save
+            </Text>
+          </Flex>
+          {userIsCreator && (
+            <Flex
+              color="#878A8C"
+              _hover={{ backgroundColor: "rgb(26 26 27 / 10%)", color: "red" }}
+              borderRadius="2px"
+              gap={1}
+              height="2rem"
+              justifySelf="end"
+              ml="auto"
+              padding="4px"
+              align="center"
+              onClick={onDeletePost}
+            >
+              <Icon fontSize="18px" as={AiOutlineDelete} />
+              <Text fontWeight={700} fontSize="0.765rem">
+                Delete Post
+              </Text>
+            </Flex>
+          )}
         </Flex>
       </Stack>
     </Flex>

@@ -13,8 +13,13 @@ type PostsProps = {
 
 const Posts: React.FC<PostsProps> = ({ communityData }) => {
   const [user] = useAuthState(auth);
-  const { postStateValue, setPostStateValue, onVote, onDelete, onSelectPost } =
-    usePosts();
+  const {
+    postStateValue,
+    setPostStateValue,
+    onVote,
+    onDeletePost,
+    onSelectPost,
+  } = usePosts();
   const fetchPosts = async () => {
     try {
       //post query
@@ -43,7 +48,7 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
             post={item}
             onVote={onVote}
             onSelectPost={onSelectPost}
-            onDelete={onDelete}
+            onDeletePost={onDeletePost}
             userVoteValue={1}
             userIsCreator={user?.uid === item.creatorId}
           />
